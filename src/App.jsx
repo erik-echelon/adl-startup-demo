@@ -34,7 +34,8 @@ import {
   FileLock2,
   MessageSquareQuote,
   ChevronDownSquare,
-  ChevronRightSquare 
+  ChevronRightSquare,
+  X
 } from "lucide-react"; 
 
 // Placeholder PDF URL - Update if you have a specific new PDF for each idea or a general one
@@ -434,6 +435,21 @@ function IdeaCard({ idea }) {
           <DialogTitle>{idea.name}</DialogTitle>
            <p className="text-sm text-slate-500 pt-1">Overall Score: <span className="font-bold text-blue-700 text-base">{totalScore}</span> / 100</p>
         </DialogHeader>
+        <button 
+          className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+          onClick={(e) => {
+            e.preventDefault();
+            // Close dialog by clicking the trigger or using escape key
+            const dialog = e.target.closest('[role="dialog"]');
+            if (dialog) {
+              const event = new KeyboardEvent('keydown', { key: 'Escape' });
+              dialog.dispatchEvent(event);
+            }
+          }}
+        >
+          <X className="h-4 w-4" />
+          <span className="sr-only">Close</span>
+        </button>
         <div className="mt-4 space-y-4">
             <div className="h-80"> {/* Chart container */}
             <ResponsiveContainer width="100%" height="100%">
@@ -501,6 +517,20 @@ function ExampleDialogContent({ example }) {
           {example.title}
         </DialogTitle>
       </DialogHeader>
+      <button 
+        className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+        onClick={(e) => {
+          e.preventDefault();
+          const dialog = e.target.closest('[role="dialog"]');
+          if (dialog) {
+            const event = new KeyboardEvent('keydown', { key: 'Escape' });
+            dialog.dispatchEvent(event);
+          }
+        }}
+      >
+        <X className="h-4 w-4" />
+        <span className="sr-only">Close</span>
+      </button>
       <div className="py-4 text-sm text-slate-700 space-y-3">
         {example.type === 'quote' && (
           <blockquote className="italic border-l-4 border-slate-300 pl-4 py-1 text-slate-600">
