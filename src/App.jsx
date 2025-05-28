@@ -18,10 +18,25 @@ import {
   CartesianGrid,
 } from "recharts";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Building2, Download } from "lucide-react"; 
+import { 
+  Building2, 
+  Download, 
+  Search, 
+  MessageSquare, 
+  Users, 
+  FileText, 
+  ChevronsDown,
+  ShieldAlert,
+  Cpu,
+  HardHat,
+  Recycle,
+  Brain,        // New icon for Gemini example
+  FileLock2,    // New icon for confidential doc example
+  MessageSquareQuote // New icon for quote examples
+} from "lucide-react"; 
 
 /**
- * Simulated data for Traveler's profile, now with more details.
+ * Simulated data for Traveler's profile.
  */
 const companyProfile = [
   {
@@ -64,13 +79,136 @@ const companyProfile = [
   { label: "Claims Data Points (Original)", value: "200M+" },
 ];
 
-// Placeholder PDF URL - replace with actual URLs as needed
-const PLACEHOLDER_PDF_URL = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
+/**
+ * Data Sources for Company Profile with example pop-up content.
+ */
+const dataSources = [
+  {
+    id: "ds1",
+    icon: Search,
+    label: "Deep Research",
+    example: {
+      title: "Deep Research with Generative AI",
+      icon: Brain,
+      type: "text_content",
+      contentLines: [
+        "AI tools like Google Gemini are leveraged to analyze vast datasets, identify emerging technological trends, and synthesize complex information from diverse sources to inform strategic opportunities.",
+        "Example Application: Analyzing global patent filings for new construction materials, or summarizing regulatory changes affecting the built environment."
+      ],
+    }
+  },
+  {
+    id: "ds2",
+    icon: MessageSquare, // Changed to MessageSquare for consistency with user file
+    label: "Internal Interviews",
+    example: {
+      title: "Internal Stakeholder Perspective",
+      icon: MessageSquareQuote,
+      type: "quote",
+      quote: "Our proprietary data, combined with the hands-on expertise of our risk control teams, gives us an unparalleled edge in understanding and mitigating construction risks. We need to leverage this more systematically.",
+      source: "Anonymous Travelers Executive (Paraphrased)"
+    }
+  },
+  {
+    id: "ds3",
+    icon: Users, // Changed to Users for consistency
+    label: "External Interviews",
+    example: {
+      title: "External Expert Validation",
+      icon: Users, // Using Users icon here too
+      type: "quote",
+      quote: "The construction tech space is rapidly evolving. Insurers who effectively partner with startups focusing on predictive analytics and IoT for risk mitigation are poised to gain a significant competitive advantage.",
+      source: "Anonymous Industry Analyst (Paraphrased)"
+    }
+  },
+  {
+    id: "ds4",
+    icon: FileText,
+    label: "Strategy Documents",
+    example: {
+      title: "Strategic Imperative Example",
+      icon: FileLock2, // Representing confidentiality
+      type: "text_content",
+      contentLines: [
+        "Representational Excerpt from a Simulated Internal Strategy Document:",
+        "Objective 3.1: Expand offerings in preventative risk solutions for commercial clients, focusing on technology-driven value propositions.",
+        "Key Action: Explore partnerships and M&A opportunities in the ConTech/InsurTech space to accelerate this objective within the next 18-24 months."
+      ],
+    }
+  },
+];
 
+
+// Placeholder PDF URL
+const PLACEHOLDER_PDF_URL = "/documents/travelers_startup_analysis_q2_2025.pdf";
 
 /**
- * Startup ideas data with hardcoded explanations for the top 10.
+ * Data for ADL Ventures Theories of Change / Megatrends with example pop-up content.
  */
+const theoriesOfChange = [
+  {
+    id: "toc1",
+    name: "Climate Adaptation & Resilient Infrastructure",
+    description: "Innovations for a built world facing new climate stresses and resource constraints.",
+    icon: ShieldAlert,
+    example: {
+      title: "Climate Adaptation: Supporting Data",
+      icon: ShieldAlert,
+      type: "text_content",
+      contentLines: [
+        "Key Finding from Simulated ADL Ventures Research:",
+        "\"Our analysis projects a 25% increase in insured losses due to extreme weather events impacting the construction sector over the next decade in North America. This underscores the urgent need for innovations in resilient building practices, advanced predictive modeling, and parametric insurance products.\""
+      ],
+    }
+  },
+  {
+    id: "toc2",
+    name: "Digitalization of Built Environment",
+    description: "Leveraging data, AI, and IoT for smarter design, construction, and operations.",
+    icon: Cpu,
+    example: {
+      title: "Digitalization: Market Driver",
+      icon: Cpu,
+      type: "text_content",
+      contentLines: [
+        "Simulated Market Analysis Snippet:",
+        "\"The adoption of Building Information Modeling (BIM) to Level 3, widespread IoT sensor deployment for real-time monitoring, and AI-driven project management tools is no longer nascent but accelerating rapidly. Startups that can effectively integrate these disparate data streams to provide actionable insights for risk reduction, operational efficiency, and enhanced safety are prime for investment and partnership.\""
+      ],
+    }
+  },
+  {
+    id: "toc3",
+    name: "Future of Work & Automation",
+    description: "Addressing labor needs and enhancing safety/productivity via new technologies.",
+    icon: HardHat,
+    example: {
+      title: "Future of Work: Challenge & Opportunity",
+      icon: HardHat,
+      type: "text_content",
+      contentLines: [
+        "Excerpt from Simulated Industry Report:",
+        "\"The construction industry faces a persistent skilled labor shortage, with an estimated 500,000 open positions in the US alone. Robotics for repetitive tasks (e.g., bricklaying, welding), exoskeletons to reduce worker strain, and AR/VR for training and remote assistance offer viable pathways to augment human capabilities, improve site safety, and boost overall productivity.\""
+      ],
+    }
+  },
+  {
+    id: "toc4",
+    name: "Sustainable Materials & Circular Economy",
+    description: "Shifting towards resource efficiency, waste reduction, and greener alternatives.",
+    icon: Recycle,
+    example: {
+      title: "Sustainability: Emerging Demand & Risk",
+      icon: Recycle,
+      type: "text_content",
+      contentLines: [
+        "Simulated Trend Report Observation:",
+        "\"Growing regulatory pressure (e.g., embodied carbon limits) and increasing client demand are pushing for the use of sustainable, low-carbon building materials (e.g., mass timber, recycled composites) and circular economy models (e.g., design for disassembly). This shift introduces new risk profiles and insurance needs related to material performance, supply chain integrity, and long-term durability.\""
+      ],
+    }
+  },
+];
+
+
 const ideas = [
   {
     id: 1,
@@ -265,7 +403,6 @@ function IdeaCard({ idea }) {
                 <p className="text-sm text-slate-600 whitespace-pre-wrap">{idea.explanation}</p>
             </ScrollArea>
             </div>
-            {/* Download Link Section */}
             <div className="pt-2">
                 <a
                     href={idea.pdfUrl || PLACEHOLDER_PDF_URL} 
@@ -284,30 +421,83 @@ function IdeaCard({ idea }) {
   );
 }
 
+/**
+ * Component to render the content of the example pop-up dialog.
+ */
+function ExampleDialogContent({ example }) {
+  const IconComponent = example.icon;
+  return (
+    <DialogContent className="sm:max-w-md">
+      <DialogHeader>
+        <DialogTitle className="flex items-center text-slate-800">
+          {IconComponent && <IconComponent className="w-5 h-5 mr-2.5 text-slate-600" />}
+          {example.title}
+        </DialogTitle>
+      </DialogHeader>
+      <div className="py-4 text-sm text-slate-700 space-y-3">
+        {example.type === 'quote' && (
+          <blockquote className="italic border-l-4 border-slate-300 pl-4 py-1 text-slate-600">
+            "{example.quote}"
+            {example.source && <cite className="block text-xs text-slate-500 mt-1.5 not-italic">- {example.source}</cite>}
+          </blockquote>
+        )}
+        {example.type === 'text_content' && example.contentLines && (
+          example.contentLines.map((line, index) => (
+            <p key={index} className={index === 0 && example.contentLines.length > 1 ? "font-medium text-slate-600" : ""}>
+              {line}
+            </p>
+          ))
+        )}
+      </div>
+    </DialogContent>
+  );
+}
+
+
 // Main application component
 export default function App() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
-      {/* Header */}
-      <header className="bg-white shadow-md p-4 flex items-center gap-4 sticky top-0 z-50">
+      <header className="bg-white shadow-md p-4 flex items-center gap-4 sticky top-0 z-50 h-[7rem]">
         <img
           src="/travelers-logo.jpg" 
           alt="Travelers Logo"
-          className="w-20 h-20 object-contain rounded" // Increased size from w-16 h-16 to w-20 h-20
+          className="w-20 h-20 object-contain rounded"
         />
         <h1 className="text-2xl font-semibold tracking-tight text-slate-800">
           Travelers Startup Fit Demo
         </h1>
       </header>
 
-      {/* Main layout */}
       <main className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
-        {/* Profile Section */}
-        <aside className="lg:col-span-1 bg-white rounded-xl shadow-lg p-6 space-y-4 self-start">
-          <h2 className="text-xl font-semibold flex items-center gap-2 text-slate-700 border-b pb-2 mb-3">
+        <aside className="lg:col-span-1 bg-white rounded-xl shadow-lg p-6 flex flex-col self-start max-h-[calc(100vh-8.5rem)]">
+          <h2 className="text-xl font-semibold flex items-center gap-2 text-slate-700 border-b pb-2 mb-3 flex-shrink-0">
             <Building2 className="w-5 h-5 text-blue-600" /> Company Profile
           </h2>
-          <ScrollArea className="h-[calc(100vh-200px)] pr-3"> 
+
+          <div className="mb-4 p-3 border border-blue-200 rounded-lg bg-blue-50/70 flex-shrink-0">
+            <h3 className="text-[0.8rem] font-semibold text-blue-700 mb-2.5 text-center tracking-wide">
+              PROFILE INFORMATION SOURCED FROM:
+            </h3>
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              {dataSources.map((source) => (
+                <Dialog key={source.id}>
+                  <DialogTrigger asChild>
+                    <div className="flex flex-col items-center justify-center text-center p-2.5 rounded-md bg-white shadow-sm hover:shadow-md transition-shadow duration-150 cursor-pointer h-full">
+                      <source.icon size={20} className="text-blue-600 mb-1.5" />
+                      <span className="text-slate-600 leading-tight text-[0.7rem]">{source.label}</span>
+                    </div>
+                  </DialogTrigger>
+                  <ExampleDialogContent example={source.example} />
+                </Dialog>
+              ))}
+            </div>
+            <div className="flex justify-center mt-3">
+              <ChevronsDown size={24} className="text-blue-500 opacity-60" />
+            </div>
+          </div>
+          
+          <ScrollArea className="flex-grow pr-3"> 
             <ul className="space-y-3">
               {companyProfile.map((item) => (
                 <li key={item.label} className="text-sm flex flex-col p-2 bg-slate-50 rounded-md hover:bg-slate-100 transition-colors">
@@ -321,8 +511,30 @@ export default function App() {
           </ScrollArea>
         </aside>
 
-        {/* Ideas list Section */}
         <section className="lg:col-span-2 space-y-4">
+          <div className="mb-6 p-4 border border-purple-300 rounded-xl bg-purple-50/70 shadow-md">
+            <h3 className="text-lg font-semibold text-purple-700 mb-3 text-center tracking-wide">
+              Ideas Informed by ADL Ventures "Theories of Change"
+            </h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+              {theoriesOfChange.map((theory) => (
+                <Dialog key={theory.id}>
+                  <DialogTrigger asChild>
+                    <div className="flex flex-col items-center p-3 rounded-lg bg-white shadow-sm hover:shadow-lg transition-shadow duration-150 h-full cursor-pointer">
+                      <theory.icon size={28} className="text-purple-600 mb-2" />
+                      <span className="text-purple-800 font-semibold text-center leading-tight text-sm mb-1">{theory.name}</span>
+                      <p className="text-slate-600 text-center text-[0.75rem] leading-snug">{theory.description}</p>
+                    </div>
+                  </DialogTrigger>
+                  <ExampleDialogContent example={theory.example} />
+                </Dialog>
+              ))}
+            </div>
+            <div className="flex justify-center mt-4">
+              <ChevronsDown size={28} className="text-purple-500 opacity-75 animate-bounce" />
+            </div>
+          </div>
+
           <h2 className="text-xl font-semibold text-slate-700 border-b pb-2 mb-3">Top 10 Startup Ideas</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {ideas 
@@ -334,7 +546,6 @@ export default function App() {
         </section>
       </main>
 
-      {/* Footer */}
       <footer className="p-4 text-center text-xs text-slate-500 border-t mt-auto">
         Demo data & UI for internal concept visualization only. © 2024
       </footer>
