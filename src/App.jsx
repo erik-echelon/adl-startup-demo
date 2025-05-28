@@ -1,13 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Card, CardContent } from "@/components/ui/card";
-// import { Button } from "@/components/ui/button"; // Button is imported but not used.
+} from "@/components/ui/dialog"; // Assuming these are Shadcn/ui components
+import { Card, CardContent } from "@/components/ui/card"; // Assuming these are Shadcn/ui components
 import {
   BarChart,
   Bar,
@@ -17,7 +16,7 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area"; // Assuming this is a Shadcn/ui component
 import { 
   Building2, 
   Download, 
@@ -30,118 +29,185 @@ import {
   Cpu,
   HardHat,
   Recycle,
-  Brain,        // New icon for Gemini example
-  FileLock2,    // New icon for confidential doc example
-  MessageSquareQuote // New icon for quote examples
+  Brain,
+  FileLock2,
+  MessageSquareQuote,
+  ChevronDownSquare,
+  ChevronRightSquare 
 } from "lucide-react"; 
 
+// Placeholder PDF URL - Update if you have a specific new PDF for each idea or a general one
+const PLACEHOLDER_PDF_URL = "/documents/travelers_startup_analysis_q2_2025.pdf"; 
+
 /**
- * Simulated data for Traveler's profile.
+ * Company Profile data - using the extensive list from your provided App.jsx.
+ * This data is static and appears to be sourced from your documents.
  */
 const companyProfile = [
   {
-    label: "Industry Leadership",
-    value: "One of the largest U.S. property-casualty insurers with deep expertise in construction and the built environment.",
+    id: "cp1",
+    label: "Industry Leadership (Construction & Property)",
+    value: "Travelers is one of the largest U.S. property-casualty insurers with deep domain expertise in construction and property. [cite: 3, 9, 299]",
+    supportingInfo: "Travelers has a dedicated Construction insurance division, often led by a President of Construction, and specialized risk engineers. [cite: 10] This deep expertise allows Travelers to understand unique risks faced by contractors and cities. [cite: 11, 299]"
   },
   {
-    label: "Risk Management Know-How",
-    value: "Specialized risk engineers and tools like ZoneCheck℠ to identify and mitigate job-site hazards.",
+    id: "cp2",
+    label: "Risk Control & Loss Prevention",
+    value: "Employs over 700 Risk Control consultants providing specialized expertise in construction safety, fire protection, and equipment breakdown. [cite: 316, 48, 320, 53]",
+    supportingInfo: "These consultants conduct approximately 120,000 on-site and virtual consultations annually, helping clients identify and mitigate job-site hazards. [cite: 12, 320, 83] They leverage tools like ZoneCheck℠ to map risks. [cite: 13]"
   },
   {
-    label: "Extensive Claims Data",
-    value: "Vast historical data on claims and losses, powering analytics like the Early Severity Predictor®.",
+    id: "cp3",
+    label: "Extensive Claims Data & Analytics",
+    value: "Possesses extensive historical data on claims and losses, with a proprietary risk assessment database containing over 200 million data points. [cite: 15, 325, 48]",
+    supportingInfo: "Travelers utilizes advanced data analytics, like its Early Severity Predictor® model, which helped cut opioid use among injured construction workers by 40%. [cite: 17] This data is invaluable for startups developing predictive analytics. [cite: 16, 18]"
   },
   {
-    label: "Innovation Focus",
-    value: "Dedicated innovation teams, Chief Innovation Officer, and initiatives like the Travelers Innovation Network for Construction.",
+    id: "cp4",
+    label: "Dedicated Construction Division",
+    value: "Travelers has a specialized Construction Division offering tailored insurance programs (INDUSTRYEdge®) for various contractor types. [cite: 311, 51, 10]",
+    supportingInfo: "This division caters to General Contractors, Highway/Street/Road Contractors, Utility Contractors, and numerous specialty trades (e.g., Concrete, Electrical, Excavation, Plumbing), providing core coverages like General Liability and Workers Compensation. [cite: 311, 51, 52, 54]"
   },
   {
-    label: "Startup Engagement",
-    value: "Partnerships with accelerators (e.g., Plug and Play), venture investments (e.g., HOVER), and a history of successful pilots (e.g., Triax).",
+    id: "cp5",
+    label: "Real Estate Division Expertise",
+    value: "Provides specialized insurance solutions (INDUSTRYEdge® for Real Estate) for commercial property owners, managers, agents, and REITs. [cite: 311, 56]",
+    supportingInfo: "Key products include Commercial Property, General Liability, and specialized coverages for large, complex risks across retail, hotels, apartments, and industrial parks. [cite: 311, 57, 59]"
   },
   {
-    label: "Financial Strength",
-    value: "Fortune 100 company with capacity for venture investments, acquisitions (e.g., Corvus), and creating new insurance solutions.",
+    id: "cp6",
+    label: "Inland Marine Leadership",
+    value: "A leading insurer for contractors' equipment, offering crucial coverage for property that is mobile, in transit, or under construction. [cite: 312, 69]",
+    supportingInfo: "Key offerings include Builders' Risk (Construction Pak®), Installation Floaters, and coverage for fixed infrastructure like bridges and towers. [cite: 313, 66, 68, 65]"
   },
   {
-    label: "Customer Network",
-    value: "Extensive relationships with construction firms, contractors, real estate companies, and public sector clients.",
-  },
-  { 
-    label: "Distribution Channels", 
-    value: "Wide agent and broker network across the U.S., facilitating market access for new solutions." 
+    id: "cp7",
+    label: "Boiler & Machinery (Equipment Breakdown)",
+    value: "Over 100 years of experience providing coverage and inspection services for critical building and industrial equipment. [cite: 313, 55, 71]",
+    supportingInfo: "This includes expertise in boilers, pressure vessels, HVAC systems, and electrical equipment, vital for property operations and complex construction. They also offer reinsurance via Travelers BoilerRe. [cite: 313, 55, 71, 447]"
   },
   {
-    label: "Industry Expertise (Original)", 
-    value: "Construction, Real Estate, Surety, Equipment Breakdown",
+    id: "cp8",
+    label: "Surety Bonds Expertise",
+    value: "Travelers is a leading surety provider in the U.S., offering Contract Surety Bonds (Bid, Performance, Payment) vital for construction projects. [cite: 315, 51, 78]",
+    supportingInfo: "They also provide Commercial Surety Bonds (License & Permit, Court, Public Official) and have experience bonding major infrastructure projects. [cite: 315, 51, 78]"
   },
-  { label: "Risk‑Control Consultants (Original)", value: "700+" },
-  { label: "Claims Data Points (Original)", value: "200M+" },
+  {
+    id: "cp9",
+    label: "Specialized Claims Management",
+    value: "Maintains specialized claim units for construction defects, property, and equipment breakdown, employing over 200 dedicated construction defect claim professionals. [cite: 316, 48, 82, 321]",
+    supportingInfo: "They leverage data analytics, forensic specialists, and dedicated nurses (TravCARE®, ConciergeCLAIM®) for efficient and empathetic claims handling. [cite: 316, 48]"
+  },
+  {
+    id: "cp10",
+    label: "Innovation Focus & Culture",
+    value: "Travelers has deliberately cultivated an innovation-friendly culture, treating innovation as a “business discipline” led by a Chief Innovation Officer. [cite: 55, 56, 184]",
+    supportingInfo: "This includes an Enterprise Innovation team, an Innovation Evangelist Network, and processes like 'Innovation Jams.' [cite: 330, 108] The leadership promotes an “ambitious innovation agenda” and a mindset of “innovating with velocity.” [cite: 57, 59]"
+  },
+  {
+    id: "cp11",
+    label: "Startup Engagement & Partnerships",
+    value: "Actively engages with technology startups through partnerships (e.g., Procore, HOVER), investments, and accelerator programs (e.g., Plug and Play, Hartford InsurTech Hub). [cite: 3, 331, 105, 106, 69]",
+    supportingInfo: "Travelers has made over 20 known investments in emerging companies and has a history of successful pilots, like with Triax Technologies for wearable safety devices. [cite: 74, 123, 41]"
+  },
+  {
+    id: "cp12",
+    label: "Travelers Innovation Network for Construction",
+    value: "Launched an online platform curating technology solutions for construction customers, effectively an insurtech marketplace. [cite: 49, 50, 144]",
+    supportingInfo: "This platform features vetted startup solutions for water loss detection, ergonomics, site monitoring, and equipment management, with eligible insureds receiving discounts. [cite: 51, 52, 145, 147] Travelers won Plug and Play’s InsurTech Corporate Innovation Award for this initiative. [cite: 70, 150]"
+  },
+  {
+    id: "cp13",
+    label: "Financial Strength for Investment & Acquisition",
+    value: "A Fortune 100 company with the financial muscle to support startups through venture investments, partnerships, and acquisitions. [cite: 73, 187, 328]",
+    supportingInfo: "Examples include co-leading a $60M Series D for HOVER [cite: 75, 155] and acquiring Corvus Insurance (a cyber MGU) for $435 million. [cite: 79, 123] This signals that a successful partnership could evolve into an acquisition. [cite: 81]"
+  },
+  {
+    id: "cp14",
+    label: "Customer Network & Distribution Channels",
+    value: "Possesses an extensive customer network of construction firms, contractors, real estate companies, and public sector clients. [cite: 38, 39, 324]",
+    supportingInfo: "This network, along with over 15,000 independent agents and brokers, provides a ready-made market and distribution channel for startup solutions. [cite: 40, 45, 324] Travelers can act as a bridge connecting startups to industry players. [cite: 44]"
+  },
+  {
+    id: "cp15",
+    label: "Smart City Risk Insight",
+    value: "Travelers insures municipalities and actively educates public entities on smart city technology risks like IoT failures and cyberattacks. [cite: 19, 20, 34]",
+    supportingInfo: "For example, Travelers recognizes that embedding sensors in water systems can help detect leaks, aligning startup solutions with city operational improvements and loss reduction. [cite: 22] This expertise can guide smart city startups in addressing real liability concerns. [cite: 21]"
+  },
+  {
+    id: "cp16",
+    label: "Internal Innovation Ecosystem",
+    value: "Operates internal capabilities like cross-functional agile teams, Claim University (R&D center), and a Digital Forensics Laboratory. [cite: 62, 63, 326]",
+    supportingInfo: "These resources allow Travelers to test and refine startup technologies in-house. For instance, a drone inspection startup could leverage Claim University for simulated property damage scenarios. [cite: 64, 65]"
+  },
+  {
+    id: "cp17",
+    label: "Alignment with Strategic Priorities",
+    value: "Startup collaborations directly support Travelers' key strategic priorities: extending risk expertise, enhancing customer experiences, and optimizing efficiency. [cite: 90, 300, 337]",
+    supportingInfo: "Examples include Triax (wearables) for risk expertise, Procore (management software) for customer experience and efficiency, and HOVER (3D imaging) for claims efficiency and customer experience. [cite: 123, 124, 125, 126]"
+  }
 ];
 
 /**
  * Data Sources for Company Profile with example pop-up content.
  */
 const dataSources = [
-  {
-    id: "ds1",
-    icon: Search,
-    label: "Deep Research",
-    example: {
-      title: "Deep Research with Generative AI",
-      icon: Brain,
-      type: "text_content",
-      contentLines: [
-        "AI tools like Google Gemini are leveraged to analyze vast datasets, identify emerging technological trends, and synthesize complex information from diverse sources to inform strategic opportunities.",
-        "Example Application: Analyzing global patent filings for new construction materials, or summarizing regulatory changes affecting the built environment."
-      ],
-    }
-  },
-  {
-    id: "ds2",
-    icon: MessageSquare, // Changed to MessageSquare for consistency with user file
-    label: "Internal Interviews",
-    example: {
-      title: "Internal Stakeholder Perspective",
-      icon: MessageSquareQuote,
-      type: "quote",
-      quote: "Our proprietary data, combined with the hands-on expertise of our risk control teams, gives us an unparalleled edge in understanding and mitigating construction risks. We need to leverage this more systematically.",
-      source: "Anonymous Travelers Executive (Paraphrased)"
-    }
-  },
-  {
-    id: "ds3",
-    icon: Users, // Changed to Users for consistency
-    label: "External Interviews",
-    example: {
-      title: "External Expert Validation",
-      icon: Users, // Using Users icon here too
-      type: "quote",
-      quote: "The construction tech space is rapidly evolving. Insurers who effectively partner with startups focusing on predictive analytics and IoT for risk mitigation are poised to gain a significant competitive advantage.",
-      source: "Anonymous Industry Analyst (Paraphrased)"
-    }
-  },
-  {
-    id: "ds4",
-    icon: FileText,
-    label: "Strategy Documents",
-    example: {
-      title: "Strategic Imperative Example",
-      icon: FileLock2, // Representing confidentiality
-      type: "text_content",
-      contentLines: [
-        "Representational Excerpt from a Simulated Internal Strategy Document:",
-        "Objective 3.1: Expand offerings in preventative risk solutions for commercial clients, focusing on technology-driven value propositions.",
-        "Key Action: Explore partnerships and M&A opportunities in the ConTech/InsurTech space to accelerate this objective within the next 18-24 months."
-      ],
-    }
-  },
-];
+    {
+      id: "ds1",
+      icon: Search, 
+      label: "Deep Research",
+      example: {
+        title: "Deep Research with Generative AI",
+        icon: Brain, 
+        type: "text_content",
+        contentLines: [
+          "AI tools like Google Gemini are leveraged to analyze vast datasets, identify emerging technological trends, and synthesize complex information from diverse sources to inform strategic opportunities.",
+          "Example Application: Analyzing global patent filings for new construction materials, or summarizing regulatory changes affecting the built environment."
+        ],
+      }
+    },
+    {
+      id: "ds2",
+      icon: MessageSquare, 
+      label: "Internal Interviews",
+      example: {
+        title: "Internal Stakeholder Perspective",
+        icon: MessageSquareQuote, 
+        type: "quote",
+        quote: "Our proprietary data, combined with the hands-on expertise of our risk control teams, gives us an unparalleled edge in understanding and mitigating construction risks. We need to leverage this more systematically.",
+        source: "Anonymous Travelers Executive (Paraphrased)"
+      }
+    },
+    {
+      id: "ds3",
+      icon: Users, 
+      label: "External Interviews",
+      example: {
+        title: "External Expert Validation",
+        icon: Users, 
+        type: "quote",
+        quote: "The construction tech space is rapidly evolving. Insurers who effectively partner with startups focusing on predictive analytics and IoT for risk mitigation are poised to gain a significant competitive advantage.",
+        source: "Anonymous Industry Analyst (Paraphrased)"
+      }
+    },
+    {
+      id: "ds4",
+      icon: FileText, 
+      label: "Strategy Documents",
+      example: {
+        title: "Strategic Imperative Example",
+        icon: FileLock2, 
+        type: "text_content",
+        contentLines: [
+          "Representational Excerpt from a Simulated Internal Strategy Document:",
+          "Objective 3.1: Expand offerings in preventative risk solutions for commercial clients, focusing on technology-driven value propositions.",
+          "Key Action: Explore partnerships and M&A opportunities in the ConTech/InsurTech space to accelerate this objective within the next 18-24 months."
+        ],
+      }
+    },
+  ];
 
-
-// Placeholder PDF URL
-const PLACEHOLDER_PDF_URL = "/documents/travelers_startup_analysis_q2_2025.pdf";
-
+  
 /**
  * Data for ADL Ventures Theories of Change / Megatrends with example pop-up content.
  */
@@ -422,7 +488,7 @@ function IdeaCard({ idea }) {
 }
 
 /**
- * Component to render the content of the example pop-up dialog.
+ * Component to render the content of the example pop-up dialog for Data Sources and Theories of Change.
  */
 function ExampleDialogContent({ example }) {
   const IconComponent = example.icon;
@@ -456,25 +522,34 @@ function ExampleDialogContent({ example }) {
 
 // Main application component
 export default function App() {
+  const [expandedProfileItemId, setExpandedProfileItemId] = useState(null); // State for expanded company profile item
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
+      {/* Header Section */}
       <header className="bg-white shadow-md p-4 flex items-center gap-4 sticky top-0 z-50 h-[7rem]">
+        {/* Logo - Ensure you have this image in your public folder or update the path */}
         <img
           src="/travelers-logo.jpg" 
           alt="Travelers Logo"
           className="w-20 h-20 object-contain rounded"
+          onError={(e) => { e.target.onerror = null; e.target.src="https://placehold.co/80x80/E2E8F0/475569?text=Logo"; }} // Fallback placeholder
         />
         <h1 className="text-2xl font-semibold tracking-tight text-slate-800">
           Travelers Startup Fit Demo
         </h1>
       </header>
 
+      {/* Main Content Grid */}
       <main className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
-        <aside className="lg:col-span-1 bg-white rounded-xl shadow-lg p-6 flex flex-col self-start max-h-[calc(100vh-8.5rem)]">
+        {/* Aside Section: Company Profile */}
+        {/* The parent 'aside' has max-h to constrain its height, enabling scrolling for its children */}
+        <aside className="lg:col-span-1 bg-white rounded-xl shadow-lg p-6 flex flex-col max-h-[calc(100vh-8.5rem)]">
           <h2 className="text-xl font-semibold flex items-center gap-2 text-slate-700 border-b pb-2 mb-3 flex-shrink-0">
             <Building2 className="w-5 h-5 text-blue-600" /> Company Profile
           </h2>
 
+          {/* Data Sources Info Box (fixed height) */}
           <div className="mb-4 p-3 border border-blue-200 rounded-lg bg-blue-50/70 flex-shrink-0">
             <h3 className="text-[0.8rem] font-semibold text-blue-700 mb-2.5 text-center tracking-wide">
               PROFILE INFORMATION SOURCED FROM:
@@ -497,21 +572,42 @@ export default function App() {
             </div>
           </div>
           
-          <ScrollArea className="flex-grow pr-3"> 
-            <ul className="space-y-3">
-              {companyProfile.map((item) => (
-                <li key={item.label} className="text-sm flex flex-col p-2 bg-slate-50 rounded-md hover:bg-slate-100 transition-colors">
-                  <span className="font-medium text-slate-700">
-                    {item.label}
-                  </span>
-                  <span className="text-slate-600">{item.value}</span>
-                </li>
-              ))}
-            </ul>
-          </ScrollArea>
+          {/* Scrollable Company Profile List */}
+          <div className="flex-1 min-h-0 max-h-96">
+            <div className="h-full overflow-y-auto pr-3">
+              <ul className="space-y-2.5">
+                {companyProfile.map((item) => {
+                  const isExpanded = expandedProfileItemId === item.id;
+                  const ExpandIcon = isExpanded ? ChevronDownSquare : ChevronRightSquare;
+                  return (
+                    <li 
+                      key={item.id} 
+                      onClick={() => setExpandedProfileItemId(isExpanded ? null : item.id)}
+                      className="text-sm p-3 bg-slate-50 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer shadow-sm"
+                    >
+                      <div className="flex justify-between items-start">
+                        <span className="font-semibold text-slate-700 text-[0.8rem] pr-2">
+                          {item.label}
+                        </span>
+                        <ExpandIcon className="w-4 h-4 text-slate-400 flex-shrink-0 mt-0.5" />
+                      </div>
+                      <p className="text-slate-600 text-[0.75rem] mt-1 leading-relaxed">{item.value}</p>
+                      {isExpanded && (
+                        <div className="mt-2.5 pt-2.5 border-t border-slate-200">
+                          <p className="text-xs text-slate-500 whitespace-pre-wrap leading-normal">{item.supportingInfo}</p>
+                        </div>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          </div>
         </aside>
 
+        {/* Main Section: Theories of Change and Startup Ideas */}
         <section className="lg:col-span-2 space-y-4">
+          {/* Theories of Change Info Box */}
           <div className="mb-6 p-4 border border-purple-300 rounded-xl bg-purple-50/70 shadow-md">
             <h3 className="text-lg font-semibold text-purple-700 mb-3 text-center tracking-wide">
               Ideas Informed by ADL Ventures "Theories of Change"
@@ -535,6 +631,7 @@ export default function App() {
             </div>
           </div>
 
+          {/* Startup Ideas List */}
           <h2 className="text-xl font-semibold text-slate-700 border-b pb-2 mb-3">Top 10 Startup Ideas</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {ideas 
@@ -546,8 +643,9 @@ export default function App() {
         </section>
       </main>
 
+      {/* Footer Section */}
       <footer className="p-4 text-center text-xs text-slate-500 border-t mt-auto">
-        Demo data & UI for internal concept visualization only. © 2024
+        Demo data & UI for internal concept visualization only. © 2025 {/* Updated year */}
       </footer>
     </div>
   );
