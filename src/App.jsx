@@ -5,8 +5,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"; // Assuming these are Shadcn/ui components
-import { Card, CardContent } from "@/components/ui/card"; // Assuming these are Shadcn/ui components
+} from "@/components/ui/dialog";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   BarChart,
   Bar,
@@ -16,7 +16,7 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
-import { ScrollArea } from "@/components/ui/scroll-area"; // Assuming this is a Shadcn/ui component
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
   Building2, 
   Download, 
@@ -25,6 +25,7 @@ import {
   Users, 
   FileText, 
   ChevronsDown,
+  ChevronsUp,
   ShieldAlert,
   Cpu,
   HardHat,
@@ -101,8 +102,8 @@ const companyProfile = [
   {
     id: "cp10",
     label: "Innovation Focus & Culture",
-    value: "Travelers has deliberately cultivated an innovation-friendly culture, treating innovation as a “business discipline” led by a Chief Innovation Officer. [cite: 55, 56, 184]",
-    supportingInfo: "This includes an Enterprise Innovation team, an Innovation Evangelist Network, and processes like 'Innovation Jams.' [cite: 330, 108] The leadership promotes an “ambitious innovation agenda” and a mindset of “innovating with velocity.” [cite: 57, 59]"
+    value: "Travelers has deliberately cultivated an innovation-friendly culture, treating innovation as a \"business discipline\" led by a Chief Innovation Officer. [cite: 55, 56, 184]",
+    supportingInfo: "This includes an Enterprise Innovation team, an Innovation Evangelist Network, and processes like 'Innovation Jams.' [cite: 330, 108] The leadership promotes an \"ambitious innovation agenda\" and a mindset of \"innovating with velocity.\" [cite: 57, 59]"
   },
   {
     id: "cp11",
@@ -114,7 +115,7 @@ const companyProfile = [
     id: "cp12",
     label: "Travelers Innovation Network for Construction",
     value: "Launched an online platform curating technology solutions for construction customers, effectively an insurtech marketplace. [cite: 49, 50, 144]",
-    supportingInfo: "This platform features vetted startup solutions for water loss detection, ergonomics, site monitoring, and equipment management, with eligible insureds receiving discounts. [cite: 51, 52, 145, 147] Travelers won Plug and Play’s InsurTech Corporate Innovation Award for this initiative. [cite: 70, 150]"
+    supportingInfo: "This platform features vetted startup solutions for water loss detection, ergonomics, site monitoring, and equipment management, with eligible insureds receiving discounts. [cite: 51, 52, 145, 147] Travelers won Plug and Play's InsurTech Corporate Innovation Award for this initiative. [cite: 70, 150]"
   },
   {
     id: "cp13",
@@ -286,7 +287,7 @@ const ideas = [
       "Strategic Adjacency": 12,
       "Portfolio Diversification": 7,
     },
-    explanation: "Water claims are Travelers’ #1 property loss driver. Pair IoT flow/acoustic sensors with Travelers’ loss data and National Account distribution to cut both frequency and severity, while offering premium credits through the Innovation Network.",
+    explanation: "Water claims are Travelers' #1 property loss driver. Pair IoT flow/acoustic sensors with Travelers' loss data and National Account distribution to cut both frequency and severity, while offering premium credits through the Innovation Network.",
     pdfUrl: PLACEHOLDER_PDF_URL 
   },
   {
@@ -299,7 +300,7 @@ const ideas = [
       "Strategic Adjacency": 13,
       "Portfolio Diversification": 6,
     },
-    explanation: "Travelers owns one of the largest latent-defect claims datasets and is a top surety writer. Feeding that data into the startup’s models lets Travelers price Builders-Risk and performance bonds with unmatched accuracy and reduce long-tail GL losses.",
+    explanation: "Travelers owns one of the largest latent-defect claims datasets and is a top surety writer. Feeding that data into the startup's models lets Travelers price Builders-Risk and performance bonds with unmatched accuracy and reduce long-tail GL losses.",
     pdfUrl: PLACEHOLDER_PDF_URL
   },
   {
@@ -325,7 +326,7 @@ const ideas = [
       "Strategic Adjacency": 10,
       "Portfolio Diversification": 9,
     },
-    explanation: "Musculoskeletal injuries dominate comp costs. Travelers’ Early Severity Predictor plus IMU sensor data enables a  dynamic  experience-mod and real-time incentives—something no competing carrier can match.",
+    explanation: "Musculoskeletal injuries dominate comp costs. Travelers' Early Severity Predictor plus IMU sensor data enables a  dynamic  experience-mod and real-time incentives—something no competing carrier can match.",
     pdfUrl: PLACEHOLDER_PDF_URL
   },
   {
@@ -338,7 +339,7 @@ const ideas = [
       "Strategic Adjacency": 11,
       "Portfolio Diversification": 7,
     },
-    explanation: "Merges Travelers’ century-long boiler-machinery inspection know-how with live vibration/current data, turning the insurer from indemnifier to preventive partner while enriching underwriting variables.",
+    explanation: "Merges Travelers' century-long boiler-machinery inspection know-how with live vibration/current data, turning the insurer from indemnifier to preventive partner while enriching underwriting variables.",
     pdfUrl: PLACEHOLDER_PDF_URL
   },
   {
@@ -364,7 +365,7 @@ const ideas = [
       "Strategic Adjacency": 10,
       "Portfolio Diversification": 9,
     },
-    explanation: "Couples telematics with Travelers’ equipment-breakdown curves to avert costly failures and schedule overruns—protecting both Contractors’ Equipment and Surety books.",
+    explanation: "Couples telematics with Travelers' equipment-breakdown curves to avert costly failures and schedule overruns—protecting both Contractors' Equipment and Surety books.",
     pdfUrl: PLACEHOLDER_PDF_URL
   },
   {
@@ -377,7 +378,7 @@ const ideas = [
       "Strategic Adjacency": 9,
       "Portfolio Diversification": 8,
     },
-    explanation: "Integrates Travelers’ CAT modeling lab with now-cast weather APIs. Push notifications secure job sites hours before convective storms, trimming large-loss severity and LAE.",
+    explanation: "Integrates Travelers' CAT modeling lab with now-cast weather APIs. Push notifications secure job sites hours before convective storms, trimming large-loss severity and LAE.",
     pdfUrl: PLACEHOLDER_PDF_URL
   },
   {
@@ -390,7 +391,7 @@ const ideas = [
       "Strategic Adjacency": 13,
       "Portfolio Diversification": 9,
     },
-    explanation: "Combines Travelers’ CyberRisk underwriting with boiler-machinery engineers to protect building-control networks—a risk few cyber MGAs understand. Creates a differentiated “Smart-Building Shield” bundle.",
+    explanation: "Combines Travelers' CyberRisk underwriting with boiler-machinery engineers to protect building-control networks—a risk few cyber MGAs understand. Creates a differentiated \"Smart-Building Shield\" bundle.",
     pdfUrl: PLACEHOLDER_PDF_URL
   },
   {
@@ -522,7 +523,9 @@ function ExampleDialogContent({ example }) {
 
 // Main application component
 export default function App() {
-  const [expandedProfileItemId, setExpandedProfileItemId] = useState(null); // State for expanded company profile item
+  const [expandedProfileItemId, setExpandedProfileItemId] = useState(null);
+  const [isDataSourcesExpanded, setIsDataSourcesExpanded] = useState(false);
+  const [isTheoriesExpanded, setIsTheoriesExpanded] = useState(false);
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
@@ -543,18 +546,48 @@ export default function App() {
       {/* Main Content Grid */}
       <main className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6 p-6">
         {/* Aside Section: Company Profile */}
-        {/* The parent 'aside' has max-h to constrain its height, enabling scrolling for its children */}
         <aside className="lg:col-span-1 bg-white rounded-xl shadow-lg p-6 flex flex-col max-h-[calc(100vh-8.5rem)]">
           <h2 className="text-xl font-semibold flex items-center gap-2 text-slate-700 border-b pb-2 mb-3 flex-shrink-0">
             <Building2 className="w-5 h-5 text-blue-600" /> Company Profile
           </h2>
 
-          {/* Data Sources Info Box (fixed height) */}
+          {/* Data Sources Info Box with Dropdown */}
           <div className="mb-4 p-3 border border-blue-200 rounded-lg bg-blue-50/70 flex-shrink-0">
-            <h3 className="text-[0.8rem] font-semibold text-blue-700 mb-2.5 text-center tracking-wide">
-              PROFILE INFORMATION SOURCED FROM:
-            </h3>
-            <div className="grid grid-cols-2 gap-2 text-xs">
+            <div 
+              className="flex items-center justify-between cursor-pointer"
+              onClick={() => setIsDataSourcesExpanded(!isDataSourcesExpanded)}
+            >
+              <h3 className="text-[0.8rem] font-semibold text-blue-700 tracking-wide">
+                PROFILE INFORMATION SOURCED FROM:
+              </h3>
+              {isDataSourcesExpanded ? (
+                <ChevronsUp size={20} className="text-blue-600" />
+              ) : (
+                <ChevronsDown size={20} className="text-blue-600" />
+              )}
+            </div>
+            
+            {isDataSourcesExpanded && (
+              <div className="mt-3 space-y-3">
+                <div className="text-xs text-slate-700 bg-white p-3 rounded-md border">
+                  <p className="font-medium text-blue-800 mb-2">About Our Data Sources:</p>
+                  <p className="mb-2">
+                    This company profile is built from a comprehensive analysis combining multiple research methodologies to ensure accuracy and depth:
+                  </p>
+                  <ul className="space-y-1 text-slate-600">
+                    <li>• <strong>Deep Research:</strong> AI-powered analysis of public documents, filings, and industry reports</li>
+                    <li>• <strong>Internal Interviews:</strong> Insights from Travelers executives and subject matter experts</li>
+                    <li>• <strong>External Interviews:</strong> Validation from industry analysts and market experts</li>
+                    <li>• <strong>Strategy Documents:</strong> Internal strategic planning documents and objectives</li>
+                  </ul>
+                  <p className="mt-2 text-slate-500 italic">
+                    Click on each source type below to see examples of the insights gathered.
+                  </p>
+                </div>
+              </div>
+            )}
+            
+            <div className="grid grid-cols-2 gap-2 text-xs mt-3">
               {dataSources.map((source) => (
                 <Dialog key={source.id}>
                   <DialogTrigger asChild>
@@ -566,9 +599,6 @@ export default function App() {
                   <ExampleDialogContent example={source.example} />
                 </Dialog>
               ))}
-            </div>
-            <div className="flex justify-center mt-3">
-              <ChevronsDown size={24} className="text-blue-500 opacity-60" />
             </div>
           </div>
           
@@ -607,11 +637,54 @@ export default function App() {
 
         {/* Main Section: Theories of Change and Startup Ideas */}
         <section className="lg:col-span-2 space-y-4">
-          {/* Theories of Change Info Box */}
+          {/* Theories of Change Info Box with Dropdown */}
           <div className="mb-6 p-4 border border-purple-300 rounded-xl bg-purple-50/70 shadow-md">
-            <h3 className="text-lg font-semibold text-purple-700 mb-3 text-center tracking-wide">
-              Ideas Informed by ADL Ventures "Theories of Change"
-            </h3>
+            <div 
+              className="flex items-center justify-between cursor-pointer mb-3"
+              onClick={() => setIsTheoriesExpanded(!isTheoriesExpanded)}
+            >
+              <h3 className="text-lg font-semibold text-purple-700 tracking-wide">
+                Ideas Informed by ADL Ventures "Theories of Change"
+              </h3>
+              {isTheoriesExpanded ? (
+                <ChevronsUp size={24} className="text-purple-600" />
+              ) : (
+                <ChevronsDown size={24} className="text-purple-600" />
+              )}
+            </div>
+            
+            {isTheoriesExpanded && (
+              <div className="mb-4 space-y-3">
+                <div className="text-sm text-slate-700 bg-white p-4 rounded-lg border border-purple-200">
+                  <p className="font-medium text-purple-800 mb-3">About ADL Ventures Theories of Change:</p>
+                  <p className="mb-3">
+                    ADL Ventures employs a "Theories of Change" framework to identify and evaluate emerging technology trends that will fundamentally reshape industries over the next 5-10 years. These theories represent our investment thesis and strategic focus areas.
+                  </p>
+                  
+                  <div className="space-y-2 text-slate-600">
+                    <p><strong>What are Theories of Change?</strong></p>
+                    <p className="text-sm">
+                      Theories of Change are macro-level hypotheses about technological, societal, and economic shifts that create new market opportunities. They help us identify startups that are positioned to benefit from or drive these fundamental changes.
+                    </p>
+                    
+                    <p className="pt-2"><strong>How do they inform startup selection?</strong></p>
+                    <p className="text-sm">
+                      Each startup idea in our analysis is evaluated against these theories to ensure alignment with long-term market trends. Startups that address multiple theories or represent critical solutions within a theory receive higher strategic value scores.
+                    </p>
+                    
+                    <p className="pt-2"><strong>Why this matters for Travelers:</strong></p>
+                    <p className="text-sm">
+                      By aligning with these theories, Travelers can partner with startups that aren't just solving today's problems, but are building solutions for tomorrow's market realities. This positions Travelers at the forefront of industry transformation rather than reacting to change.
+                    </p>
+                  </div>
+                  
+                  <p className="mt-3 text-slate-500 italic text-sm">
+                    Click on each theory below to see supporting market analysis and trend data.
+                  </p>
+                </div>
+              </div>
+            )}
+            
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
               {theoriesOfChange.map((theory) => (
                 <Dialog key={theory.id}>
@@ -625,9 +698,6 @@ export default function App() {
                   <ExampleDialogContent example={theory.example} />
                 </Dialog>
               ))}
-            </div>
-            <div className="flex justify-center mt-4">
-              <ChevronsDown size={28} className="text-purple-500 opacity-75 animate-bounce" />
             </div>
           </div>
 
@@ -645,7 +715,7 @@ export default function App() {
 
       {/* Footer Section */}
       <footer className="p-4 text-center text-xs text-slate-500 border-t mt-auto">
-        Demo data & UI for internal concept visualization only. © 2025 {/* Updated year */}
+        Demo data & UI for internal concept visualization only. © 2025
       </footer>
     </div>
   );
