@@ -553,13 +553,29 @@ export default function App() {
 
           {/* Data Sources Info Box with Dropdown */}
           <div className="mb-4 p-3 border border-blue-200 rounded-lg bg-blue-50/70 flex-shrink-0">
+            <h3 className="text-[0.8rem] font-semibold text-blue-700 tracking-wide mb-3">
+              PROFILE INFORMATION SOURCED FROM:
+            </h3>
+            
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              {dataSources.map((source) => (
+                <Dialog key={source.id}>
+                  <DialogTrigger asChild>
+                    <div className="flex flex-col items-center justify-center text-center p-2.5 rounded-md bg-white shadow-sm hover:shadow-md transition-shadow duration-150 cursor-pointer h-full">
+                      <source.icon size={20} className="text-blue-600 mb-1.5" />
+                      <span className="text-slate-600 leading-tight text-[0.7rem]">{source.label}</span>
+                    </div>
+                  </DialogTrigger>
+                  <ExampleDialogContent example={source.example} />
+                </Dialog>
+              ))}
+            </div>
+
+            {/* Dropdown Arrow at Bottom */}
             <div 
-              className="flex items-center justify-between cursor-pointer"
+              className="flex items-center justify-center mt-3 cursor-pointer"
               onClick={() => setIsDataSourcesExpanded(!isDataSourcesExpanded)}
             >
-              <h3 className="text-[0.8rem] font-semibold text-blue-700 tracking-wide">
-                PROFILE INFORMATION SOURCED FROM:
-              </h3>
               {isDataSourcesExpanded ? (
                 <ChevronsUp size={20} className="text-blue-600" />
               ) : (
@@ -567,6 +583,7 @@ export default function App() {
               )}
             </div>
             
+            {/* Expandable Content Below */}
             {isDataSourcesExpanded && (
               <div className="mt-3 space-y-3">
                 <div className="text-xs text-slate-700 bg-white p-3 rounded-md border">
@@ -581,25 +598,11 @@ export default function App() {
                     <li>• <strong>Strategy Documents:</strong> Internal strategic planning documents and objectives</li>
                   </ul>
                   <p className="mt-2 text-slate-500 italic">
-                    Click on each source type below to see examples of the insights gathered.
+                    Click on each source type above to see examples of the insights gathered.
                   </p>
                 </div>
               </div>
             )}
-            
-            <div className="grid grid-cols-2 gap-2 text-xs mt-3">
-              {dataSources.map((source) => (
-                <Dialog key={source.id}>
-                  <DialogTrigger asChild>
-                    <div className="flex flex-col items-center justify-center text-center p-2.5 rounded-md bg-white shadow-sm hover:shadow-md transition-shadow duration-150 cursor-pointer h-full">
-                      <source.icon size={20} className="text-blue-600 mb-1.5" />
-                      <span className="text-slate-600 leading-tight text-[0.7rem]">{source.label}</span>
-                    </div>
-                  </DialogTrigger>
-                  <ExampleDialogContent example={source.example} />
-                </Dialog>
-              ))}
-            </div>
           </div>
           
           {/* Scrollable Company Profile List */}
@@ -639,13 +642,30 @@ export default function App() {
         <section className="lg:col-span-2 space-y-4">
           {/* Theories of Change Info Box with Dropdown */}
           <div className="mb-6 p-4 border border-purple-300 rounded-xl bg-purple-50/70 shadow-md">
+            <h3 className="text-lg font-semibold text-purple-700 tracking-wide mb-3">
+              Ideas Informed by ADL Ventures "Theories of Change"
+            </h3>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
+              {theoriesOfChange.map((theory) => (
+                <Dialog key={theory.id}>
+                  <DialogTrigger asChild>
+                    <div className="flex flex-col items-center p-3 rounded-lg bg-white shadow-sm hover:shadow-lg transition-shadow duration-150 h-full cursor-pointer">
+                      <theory.icon size={28} className="text-purple-600 mb-2" />
+                      <span className="text-purple-800 font-semibold text-center leading-tight text-sm mb-1">{theory.name}</span>
+                      <p className="text-slate-600 text-center text-[0.75rem] leading-snug">{theory.description}</p>
+                    </div>
+                  </DialogTrigger>
+                  <ExampleDialogContent example={theory.example} />
+                </Dialog>
+              ))}
+            </div>
+
+            {/* Dropdown Arrow at Bottom */}
             <div 
-              className="flex items-center justify-between cursor-pointer mb-3"
+              className="flex items-center justify-center mt-4 cursor-pointer"
               onClick={() => setIsTheoriesExpanded(!isTheoriesExpanded)}
             >
-              <h3 className="text-lg font-semibold text-purple-700 tracking-wide">
-                Ideas Informed by ADL Ventures "Theories of Change"
-              </h3>
               {isTheoriesExpanded ? (
                 <ChevronsUp size={24} className="text-purple-600" />
               ) : (
@@ -653,8 +673,9 @@ export default function App() {
               )}
             </div>
             
+            {/* Expandable Content Below */}
             {isTheoriesExpanded && (
-              <div className="mb-4 space-y-3">
+              <div className="mt-4 space-y-3">
                 <div className="text-sm text-slate-700 bg-white p-4 rounded-lg border border-purple-200">
                   <p className="font-medium text-purple-800 mb-3">About ADL Ventures Theories of Change:</p>
                   <p className="mb-3">
@@ -679,26 +700,11 @@ export default function App() {
                   </div>
                   
                   <p className="mt-3 text-slate-500 italic text-sm">
-                    Click on each theory below to see supporting market analysis and trend data.
+                    Click on each theory above to see supporting market analysis and trend data.
                   </p>
                 </div>
               </div>
             )}
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 text-xs">
-              {theoriesOfChange.map((theory) => (
-                <Dialog key={theory.id}>
-                  <DialogTrigger asChild>
-                    <div className="flex flex-col items-center p-3 rounded-lg bg-white shadow-sm hover:shadow-lg transition-shadow duration-150 h-full cursor-pointer">
-                      <theory.icon size={28} className="text-purple-600 mb-2" />
-                      <span className="text-purple-800 font-semibold text-center leading-tight text-sm mb-1">{theory.name}</span>
-                      <p className="text-slate-600 text-center text-[0.75rem] leading-snug">{theory.description}</p>
-                    </div>
-                  </DialogTrigger>
-                  <ExampleDialogContent example={theory.example} />
-                </Dialog>
-              ))}
-            </div>
           </div>
 
           {/* Startup Ideas List */}
